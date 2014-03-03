@@ -1,0 +1,23 @@
+#template("xwikivars.vm")
+#template("layoutvars.vm")
+#template("htmlheader.vm")
+#template("menuview.vm")
+#template("header.vm")
+#if(($hidecolumns && ($!hidecolumns == 1)) || ($showLeftPanels == "0" && $showRightPanels == "0"))
+<div class="container">
+#else
+<div class="container-fluid">
+  <div class="row-fluid">
+  #if($showLeftPanels != "0")
+    #if($showRightPanels != "0")
+    <div class="span9">
+      <div class="row-fluid">
+        <div class="span8 pull-right">
+    #else
+        <div class="span9 pull-right">
+    #end
+  #else
+    ## showRightPanels == 1
+        <div class="span9">
+  #end
+#end

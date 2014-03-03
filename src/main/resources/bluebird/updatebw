@@ -1,0 +1,5 @@
+#!/bin/bash
+for THEME in amelia cerulean cosmo cyborg flatly journal readable simplex slate spacelab spruce superhero united
+do
+wget http://bootswatch.com/$THEME/bootstrap.min.css -O css/$THEME.min.css
+done

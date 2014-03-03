@@ -1,0 +1,40 @@
+#template('xwikivars.vm')
+#set($dq='"')
+#set($divider='<span class="divider">&#187;</span>')
+#set($parents = [])
+#set($discard = $parents.add($doc.fullName))
+#macro(computeHierarchy $doc $result $level)
+  #set($parent = $doc.parent)
+  #if(($parent != '') && $parent != "Main.WebHome" && ($level < 6) && (!$parents.contains($parent)))
+    #set($discard = $parents.add($parent))
+    #set($pdoc = $xwiki.getDocument($parent).getTranslatedDocument())
+    #if ($pdoc)
+      #set ($pdocurl = $pdoc.getURL('view'))
+      #set ($nstring = "<li><a href=${dq}$pdocurl${dq}>$escapetool.xml(${pdoc.getPlainTitle()})</a>$divider<li>$result")
+      #set ($level = $level + 1)
+      #computeHierarchy($pdoc $nstring $level)
+    #else
+      ## No access to the parent document
+      $result
+    #end
+  #else
+    #if($parent != "Main.WebHome")
+      $result
+    #else
+      <li><a href="$xwiki.getURL($parent)"><span class="icon-home"></span></a>$divider</li>$result
+    #end
+  #end
+#end
+#if($isInServletMode) ## Visible only in a page
+  <ul class="breadcrumb">
+  #if ($doc.fullName != 'Main.WebHome')
+    #if ($xcontext.action == 'edit' || $xcontext.action == 'inline')
+      #computeHierarchy($doc "<li><a href=${dq}${doc.getURL('view')}${dq}>$escapetool.xml($tdoc.getPlainTitle())</a></li>" 0)
+    #else
+      #computeHierarchy($doc "<li class=${dq}active${dq}>$escapetool.xml($tdoc.getPlainTitle())</li>" 0)
+    #end
+  #else
+    <li class="active"><span class="icon-home"></span></li>
+  #end
+  </ul>
+#end

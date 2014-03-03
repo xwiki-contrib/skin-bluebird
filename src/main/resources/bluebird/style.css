@@ -1,0 +1,3 @@
+@import "$xwiki.getSkinFile('css/bootstrap.min.css', true)";
+@import "$xwiki.getSkinFile('css/font-awesome.min.css', true)";
+@import "$xwiki.getSkinFile('bluebird.css', true)";

@@ -1,0 +1,605 @@
+/* Allow inverting left and right column in row-fluid */
+.row-fluid .pull-left[class*="span"] {
+    float: none;
+    margin-left: 0;
+    margin-right: 2.1277%;
+    *margin-right: 2.0745%;
+}
+@media (max-width: 979px) and (min-width: 768px) {
+    .row-fluid .pull-left[class*="span"] {
+        margin-right: 2.7624%;
+        *margin-right: 2.7092%;
+    }
+}
+@media (min-width: 1200px) {
+    .row-fluid .pull-left[class*="span"] {
+        margin-right: 2.5641%;
+        *margin-right: 2.5109%;
+    }
+}
+
+.well .nav-header {
+    padding-top: 0;
+}
+
+.main {
+  padding: 15px;
+}
+
+/* menuview */
+.navbar .brand {
+    padding: 6px 20px;
+}
+
+.langicon {
+    margin-top: -4px;
+}
+
+/* breadcrumb */
+.breadcrumb {
+    background-color: transparent;
+    border: none;
+    margin-bottom: 0;
+}
+
+/* content */
+#mainContentArea, #mainEditArea {
+    margin-top: 10px;
+}
+
+.edit_section {
+    float: right;
+}
+
+.edit_section a {
+    background-image:url("../img/glyphicons-halflings-white.png");
+    display:block;
+    width:14px;
+    height:14px;
+    line-height:14px;
+    vertical-align:text-top;
+    background-image:url("../img/glyphicons-halflings.png");
+    background-repeat:no-repeat;
+    margin-top:-45px;
+    background-position:-96px -72px;
+    color: transparent;
+    *margin-right:.3em;
+}
+
+/* panels */
+.panels {
+    margin-top: 20px;
+}
+
+.panel {
+    padding: 10px 19px;
+}
+
+.panelitem {
+  display: block;
+  overflow: hidden;
+  word-wrap: break-word;
+  padding-left: 1em;
+  text-indent: -1em;
+}
+
+.pitemseparator {
+  display: none;
+}
+
+.panel ul {
+    list-style-type: none;
+    margin: 0;
+}
+
+/* docextra */
+
+#xwikidata {
+    margin-top: 15px;
+}
+
+#AddComment legend, #AddAttachment legend {
+    font-size: 21px !important;
+    border-bottom: none;
+    margin-bottom: 0px;
+}
+
+/* upload */
+.progress-info .progress {
+    background: none;
+}
+
+/* footer */
+.footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 70px;
+    border-top: 1px solid #e5e5e5;
+    background-color: #f5f5f5;
+}
+
+/* Form */
+
+fieldset.xwikimessage {
+    position: relative;
+    margin: 0 auto;
+    padding-top: 0;
+    padding-bottom: 10px;
+}
+
+fieldset.xwikimessage legend {
+    float: left;
+}
+
+label {
+    color: #9F9F9F;
+    font-size: .85em;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+label input[type="radio"], input[type="checkbox"] {
+    margin: 7px 0 10.5px;
+}
+
+.main textarea {
+    width: 100%;
+}
+
+.errormessage, .warningmessage, .infomessage, .successmessage, .plainmessage {
+  background: #ECECEC 6px 8px no-repeat;
+  border: 1px dotted $theme.borderColor; 
+  border-radius: 4px;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.1) inset;
+  margin: 4px 0; 
+  overflow: auto; 
+  padding: 8px 28px;
+  text-align: justify;
+} 
+
+/* -----------------------Tables-------------------------*/
+.paginationFilter .pagination {
+  margin: 0;
+}
+
+table.xwikidatatable,
+table.wiki-table {
+  border-collapse: collapse;
+  vertical-align: middle;
+}
+
+table.xwikidatatable .row,
+table.wiki-table .row{
+  margin-left: 0 !important;
+}
+
+table.xwikidatatable .row::before,
+table.wiki-table .row::before,
+table.xwikidatatable .row::after,
+table.wiki-table .row::after{
+  display: none;
+}
+
+.xwikidatatable thead,
+.wiki-table thead,
+.xwikidatatable tbody, 
+.wiki-table tbody,
+.xwikidatatable tfoot,
+.wiki-table tfoot {
+  /* Override default browser styles. */
+  vertical-align: inherit;
+}
+
+.xwikidatatable caption,
+.wiki-table caption,
+.xwikidatatable th, 
+.wiki-table,
+.xwikidatatable td,
+.wiki-table td {
+  font-size: 1em;
+}
+
+.xwikidatatable th, .wiki-table th {
+  background-color: #E8E8E8;
+  font-weight: 700;
+}
+
+table.xwikidatatable pre, table.wiki-table pre {
+  white-space: pre-wrap;
+}
+
+.xwikidatatable {
+  width: 99%;
+}
+table.wiki-table, table.xwikidatatable {
+  margin: 1em 1px;
+}
+
+.xwikidatatable th, .xwikidatatable td,
+.wiki-table th, .wiki-table td {
+  border: 1px solid ;
+  padding: 3px 4px;
+}
+/*--------------*/
+textarea.wiki-code {
+    width: 100%;
+}
+
+/* ----------------History----------------*/
+#historyform .currentversion td {
+  background-color: #FFFFCC;
+}
+
+#historyform  th {
+  border: 0;
+  border-bottom: 1px solid #E8E8E8;
+  font-size: .8em;
+  padding: 3px 4px;
+  text-transform: uppercase;
+}
+
+#historyform td{
+  border: 0;
+  border-bottom: 1px solid #E8E8E8;
+  color: #9F9F9F;
+  font-size: .85em;
+  padding: 3px 4px;
+}
+
+/* --------------XWiki items types list -----------------*/
+ul.xlist {
+  margin: 0 0 0 .5em !important;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+ul.xlist li.xunderline {
+  border-bottom: solid 1px #E8E8E8 !important;
+}
+
+ul.xlist li.xhighlight:hover {
+  background-color: #FFFFDD;
+}
+
+ul.xlist li {
+  float: right;
+  height: 100%;
+  list-style-type: none;
+  padding: .1em 0;
+  width: 100% !important;
+}
+
+ul.xlist li.space, ul.xlist li.page, ul.xlist li.comment, ul.xlist li.attachment {
+  background-position: 2px 3px;
+  background-repeat: no-repeat;
+}
+
+ul.xlist li.space {
+  background-image: url("$xwiki.getSkinFile('icons/silk/folder.png')");
+}
+
+ul.xlist li.page {
+  background-image: url("$xwiki.getSkinFile('icons/silk/page_white_text.png')");
+}
+
+ul.xlist li.comment {
+  background-image: url("$xwiki.getSkinFile('icons/silk/comment.png')");
+}
+
+ul.xlist li.attachment {
+  background-image: url("$xwiki.getSkinFile('icons/silk/attach.png')");
+  padding-bottom: 0;
+}
+
+ul.xlist li.create a {
+  background: url("$xwiki.getSkinFile('icons/silk/bullet_add.png')") 7px 3px no-repeat;
+  color: #656565;
+  text-decoration: none;
+  padding-left: 1.5em;
+}
+
+ul.xlist li.xitem div.xitemcontainer {
+  text-indent: 1.5em;
+}
+
+ul.xlist li.xitem div.xitemcontainer ul.xlist {
+  text-indent: 0;
+}
+
+.xspacer {
+  display: none;
+}
+ 
+/* @group EDIT LAYOUT  */
+/* --------------------------------------------------------------
+  *  Layout elements for Colibri skin in edit mode
+-------------------------------------------------------------- */
+.alleditcontent {
+  margin: 0 25px 25px 20px;
+}
+.editor-wiki .alleditcontent, .editor-wysiwyg .alleditcontent {
+  margin-right: 225px;
+}
+
+.alleditcontent label {
+  display: block;
+  font-size: .85em;
+  font-weight: 700;
+  margin: 10px 0 4px;
+  text-transform: uppercase;
+  color: #9F9F9F;
+}
+
+#xwikidoctitleinput, .alleditcontent #parentinput input {
+  width: 99.8%;
+}
+
+.inlinebody #hierarchy, .editbody #hierarchy {
+  display: inline-block;
+  border-right: 1px solid #FFFFFF; /* Fixes an IE8 layout issue */
+}
+
+/* "Edit parent" icon */
+.edit-meta-tools {
+  display: inline-block;
+  vertical-align: middle;
+}
+#mainEditArea:target #hierarchy, #mainEditArea:target .edit-meta-tools,
+#mainContentArea:target #hierarchy, #mainContentArea:target .edit-meta-tools {
+  display: none;
+}
+.edit-meta-tools a {
+  display: block;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  text-indent: -9999px;
+  background: transparent none left top no-repeat;
+  margin-left: 4px;
+}
+.edit-meta-tools a.edit-parent {
+  background-image: url("$xwiki.getSkinFile('icons/xwiki/parent_edit.gif')");
+}
+.edit-meta-tools a.hide-edit-parent {
+  background-image: url("$xwiki.getSkinFile('icons/silk/chart_organisation.png')");
+}
+
+/* Parent editing area */
+#mainEditArea #parentinput, #mainContentArea #parentinput {
+  display: none;
+  background: #F3F3F3;
+  padding: 4px 12px;
+  margin: 0 -12px 8px -12px;
+  font-size: 90%;
+}
+/* Don't combine the following two rules, otherwise IE will fail to recognize either of them */
+#mainEditArea:target #parentinput, #mainContentArea:target #parentinput {
+  display: block;
+}
+#mainEditArea #parentinput.active, #mainContentArea #parentinput.active {
+  display: block;
+}
+#parentinput label {
+  margin: 0;
+}
+#parentinput input {
+  color: #528BA1;
+}
+
+.inlinebody dt {
+  font-size: .85em;
+  text-transform: uppercase;
+}
+
+/* @group EDITORS  */
+/* --------------------------------------------------------------
+  * These classes should be moved in proper editor css files
+-------------------------------------------------------------- */
+/* --------------------Wiki Editor-----------------------*/
+.leftmenu2 { /* TODO rename */
+  background-color: #f0f0ee;
+  padding: 2px;
+}
+
+.leftmenu2 a img {
+  margin: 2px;
+}
+
+#xwikieditcontentinner {
+  border: 1px solid E8E8E8;
+}
+
+#xwikieditcontentinner textarea#content {
+  border: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* --------------Old WYSYWYG Editor----------------------*/
+/* Should be in editor_ui.css */
+iframe.mceEditorIframe, .mceEditor {
+  width: 100% !important;
+}
+
+.mceEditor td {
+  padding:0;
+}
+
+.mceEditorContainer {
+  display: block;
+  height: 100% !important;
+  position: relative;
+  width: 100%;
+}
+
+#body.mceContentBody {
+  background: #FFFFFF;
+  min-width: 100px;
+}
+
+/* ----------------New WYSYWYG Editor--------------------*/
+/* Should be in Wysiwyg.css */
+table.xRichTextEditorTabPanel td {
+  background-color: #FFFFFF;
+}
+
+/* Should be in RichTextArea.css - for table resizing */
+#body.main table {
+  margin: 0;
+}
+
+.wikimodel-emptyline {
+  height: 1em;
+}
+
+.xwikirenderingerror {
+  background: #F3F3F3 url("$xwiki.getSkinFile('icons/silk/exclamation.png')") no-repeat 8px 50%;
+  border: 1px dotted #E8E8E8;
+  color: #CC3333;
+  display: block;
+  padding: 2px 28px;
+}
+
+.xwikirenderingerrordescription {
+  border: 1px dotted #E8E8E8;
+  border-width: 0 1px 1px;
+  clear: both;
+  display: block;
+  font-size: 90%;
+  margin: 0 0 4px;
+  overflow: auto;
+  padding: 4px 28px;
+}
+
+/* ----------------Objects Editor------------------------*/
+/* Should be in dataeditors.css - added dt, div */
+#body #xwikiobjects dt label, #body #xwikiclassproperties dt label {
+  color: #4D5860;
+  font-size: 1.1em;
+  font-weight: 400;
+}
+
+div.xobject-content dt, div.xproperty-content dt{
+  margin: 0;
+}
+
+/* For TagClass */
+div#xwikiobjects input[type="checkbox"], div#xwikiclassproperties input[type="checkbox"] {
+  width: auto;
+}
+
+.xwiki-form-listclass {
+  display: block;
+}
+
+/* @group VERTICAL MENU */
+/* General styling */
+.vertical-menu {
+  border: 1px solid #E8E8E8;
+  border-top-width: 0;
+  float: left;
+  font-size: .857em;/* 14px -> 12px */
+  margin: 0 2em 2em 0;
+  width: 15em;
+}
+
+.vertical-menu ul {
+  list-style-type: none;
+  margin: 0;
+}
+.vertical-menu ul ul ul {
+  margin-left: 2em;
+}
+
+.vertical-menu li {
+  border-top: 1px solid #E8E8E8;
+  position: relative;
+}
+
+.vertical-menu span {
+  background: none no-repeat scroll 7px transparent;
+  display: block;
+}
+
+.vertical-menu a {
+  display: block;
+  padding: .5em .5em .5em 30px;
+  text-decoration: none;
+  word-wrap: break-word;
+}
+
+/* Section titles */
+.vertical-menu .group {
+  background-color: #ECECEC;
+  #css3_backgroundLinearGradient({
+     'to': 'bottom',
+     'colors': [
+      {'color': "#FFFFFF", 'position': '0%'},
+      {'color': "#ECECEC", 'position': '100%'}
+    ]
+  })
+  font-weight: 700;
+  font-variant: small-caps;
+}
+.vertical-menu .group * {
+  color: #4D5860;
+}
+
+/* Highlight items when hovering */
+.vertical-menu span:hover {
+  background-color: #FFFFDD;
+}
+.vertical-menu .group:hover {
+  background-color: #ECECEC;
+  #css3_backgroundLinearGradient({
+     'to': 'bottom',
+     'colors': [
+      {'color': "#FFFFFF", 'position': '0%'},
+      {'color': "#ECECEC", 'position': '50%'}
+    ]
+  })
+}
+.vertical-menu .group:hover * {
+  color: #4D5860;
+}
+
+/* Selected item */
+.vertical-menu .current {
+  background-color: #FFFFDD;
+  font-weight: bold;
+}
+.vertical-menu .current-group {
+  background-color: #ECECEC;
+  #css3_backgroundLinearGradient({
+     'to': 'bottom',
+     'colors': [
+      {'color': "#FFFFFF", 'position': '0%'},
+      {'color': "#ECECEC", 'position': '50%'}
+    ]
+  })
+  color: $theme.menuLinkColor;
+}
+.vertical-menu .current-group *, .vertical-menu .current-group *:visited, .vertical-menu .current-group *:active {
+  color: #4D5860;
+}
+
+/* Draw an arrow pointing right for the selected item */
+.vertical-menu .current:after, .vertical-menu .current a:after {
+  border-left: 10px solid #FFFFDD;
+  border-top: 1.2em solid transparent;
+  border-bottom: 1.2em solid transparent;
+  content: "";
+  display: block;
+  position: absolute;
+  right: -10px;
+  top: 0%;
+}
+.vertical-menu .current a:after {
+  border-left-color: #E8E8E8;
+  right: -11px;
+}
+.vertical-menu .current-group:after {
+  border-left-color: #ECECEC !important;
+}
+
+

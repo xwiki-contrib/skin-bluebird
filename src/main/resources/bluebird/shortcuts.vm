@@ -1,0 +1,7 @@
+##
+##  Display the document title, modification date, and shortcuts to comments/attachments...
+##
+  <div id="document-info" class="muted"> ## Last modification
+    <small>$msg.get('core.footer.modification', [$xwiki.getUserName($tdoc.author), $xwiki.formatDate($tdoc.date)])</small>
+    <hr/>
+  </div>

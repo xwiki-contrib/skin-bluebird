@@ -1,0 +1,165 @@
+<strong id="xwikicontentmenutitle" class="hidden">$msg.get('core.menu.content.title')</strong>
+#if($hasEdit && !$isReadOnly)
+  ## Compute the default edit mode
+  #set($editaction = $doc.getDefaultEditMode())
+  ##
+  ## Edit menu
+  ##
+  #if($keyboardShortcutsEnabled)
+    <script type="text/javascript">
+    //<![CDATA[
+      shortcut.add("$msg.get('core.shortcuts.view.edit')",function() { location.href=$('tmEdit').down('a').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+      #if($isAdvancedUser)
+        shortcut.add("$msg.get('core.shortcuts.view.wiki')",function() { location.href=$('tmEditWiki').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+        shortcut.add("$msg.get('core.shortcuts.view.wysiwyg')",function() { location.href=$('tmEditWysiwyg').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+        shortcut.add("$msg.get('core.shortcuts.view.inline')",function() { location.href=$('tmEditInline').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+        shortcut.add("$msg.get('core.shortcuts.view.rights')",function() { location.href=$('tmEditRights').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+        shortcut.add("$msg.get('core.shortcuts.view.objects')",function() { location.href=$('tmEditObject').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+        #if($hasAdmin)
+          shortcut.add("$msg.get('core.shortcuts.view.class')",function() { location.href=$('tmEditClass').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+        #end
+      #end
+    //]]>
+    </script>
+  #end
+  #if($isAdvancedUser)
+    #xwikimenubuttonstart($doc.getURL($editaction, $!languageparams) $msg.get('core.menu.edit') 'tmEdit' 'pencil' 'success')
+    #submenuitem($doc.getURL('edit', "$!{languageparams}#if ($languageparams != '')&amp;#{end}editor=wysiwyg") $msg.get('core.menu.edit.wysiwyg') 'tmEditWysiwyg' 'pencil')
+    #submenuitem($doc.getURL('edit', "$!{languageparams}#if ($languageparams != '')&amp;#{end}editor=wiki") $msg.get('core.menu.edit.wiki') 'tmEditWiki' '')
+    #submenuitem($doc.getURL($editaction, "$!{languageparams}#if ($languageparams != '')&amp;#{end}editor=inline") $msg.get('core.menu.edit.inline') 'tmEditInline' 'list-alt')
+    #submenuseparator()
+    #submenuitem($doc.getURL('edit', 'editor=rights') $msg.get('core.menu.edit.rights') 'tmEditRights' 'lock')
+    #submenuitem($doc.getURL('edit', 'editor=object') $msg.get('core.menu.edit.object') 'tmEditObject' 'cog')
+    #submenuitem($doc.getURL('edit', 'editor=class') $msg.get('core.menu.edit.class') 'tmEditClass' 'cog')
+    #xwikimenubuttonend()
+  #else ## !isAdvanced
+    #xwikimenubutton($doc.getURL($editaction, $!languageparams) $msg.get('core.menu.edit') 'tmEdit', 'pencil', 'success')
+  #end
+#end
+##
+## Menu Add
+##
+#if ($hasCreateSpace || $hasCreatePage || ($hasComment && !$doc.isNew()))
+  #xwikimenubuttonstart('' $msg.get('core.menu.create') 'tmCreate' 'plus' 'primary')
+  #set ($hasPreviousMenuSection = false)
+  #if ($hasCreatePage)
+    #submenuitem("$doc.getURL('create')" $msg.get('core.menu.create.page') 'tmCreatePage', 'file')
+    ## Only display the Office Importer menu action if the Office Importer application is functional
+    #if ("$!oomanager.serverState" == 'Connected')
+      #submenuitem($officeImporterMainDocument.getURL('view', "&amp;parent=$!{escapetool.url($doc.fullName)}") $msg.get('core.menu.create.pageFromOffice') 'tmCreatePageFromOffice', '')
+    #end
+    #set ($hasPreviousMenuSection = true)
+  #end
+  #if ($hasCreateSpace)
+    #if ($hasPreviousMenuSection)
+      #submenuseparator()
+    #end
+    #submenuitem("$doc.getURL('create', 'tocreate=space')" $msg.get('core.menu.create.space') 'tmCreateSpace', 'folder-open')
+    #set ($hasPreviousMenuSection = true)
+  #end
+#if(!$doc.isNew())
+  #if ((($hasComment && $showcomments) || ($hasEdit && $showattachments)) && $hasPreviousMenuSection)
+    #submenuseparator()
+  #end
+  #if ($hasComment && $showcomments)
+    #submenuitem("$doc.getURL('view', 'viewer=comments')" $msg.get('docextra.comments') 'tmCreateComment', 'comment')
+    <script type="text/javascript">
+      //<![CDATA[
+        document.observe('xwiki:dom:loaded', function() {
+          $('tmCreateComment').observe('click', function(event) {
+            event.stop();
+            XWiki.displayDocExtra('Comments', 'commentsinline.vm', true);
+            return false;
+          });
+        });
+      //]]>
+    </script>
+    #set ($hasPreviousMenuSection = true)
+  #end
+  #if ($hasEdit && $showattachments)
+    #submenuitem("$doc.getURL('view', 'viewer=attachments')" $msg.get('docextra.attachments') 'tmCreateAttachment', 'paper-clip')
+    <script type="text/javascript">
+      //<![CDATA[
+        document.observe('xwiki:dom:loaded', function() {
+          $('tmCreateAttachment').observe('click', function(event) {
+            event.stop();
+            XWiki.displayDocExtra('Attachments', 'attachmentsinline.vm', true);
+            return false;
+          });
+        });
+      //]]>
+    </script>
+    #set ($hasPreviousMenuSection = true)
+  #end
+#end
+  #xwikimenubuttonend()
+#end
+##
+##
+## Build the list of documents extras to display, if it does not exist (default).
+## List format : ["ExtraAnchor",  "ExtraTabText", numberOfItems]
+##
+#if (!$docextralinks && !$docextras)
+  #set($docextralinks = [])
+  #if($xcontext.action == 'view' && $viewer != 'content')
+    #set ($discard = $docextralinks.add(['content', $msg.get('core.links.content'), -1, 'file']))
+  #end
+  #if($viewer != 'comments' && $showcomments)
+    #set ($discard = $docextralinks.add(["comments", $msg.get("docextra.comments"), $doc.getObjects("XWiki.XWikiComments").size(), 'comments-alt']))
+  #end
+  #if($showannotations)
+    #if(!$annotationCount)
+      ## Annotation count is supposed to be defined in xwikivars.vm. If for a reason or another it is not
+      ## defined at this point, we tap into the standard annotation class, and do not load again the 
+      ## config document. This however should not happen.
+      #set($annotationCount = $doc.getObjects('AnnotationCode.AnnotationClass').size())
+    #end
+    #set ($discard = $docextralinks.add(["annotations", $msg.get("docextra.annotations"), $annotationCount, 'flag']))
+  #end
+  #if($viewer != 'attachments' && $showattachments)
+    #set ($discard = $docextralinks.add(["attachments", $msg.get("docextra.attachments"), $doc.getAttachmentList().size(), 'paper-clip']))
+  #end
+  #if($viewer != 'history' && $showhistory)
+    #set ($discard = $docextralinks.add(["history", $msg.get("docextra.history"), -1, 'time']))
+  #end
+  #if($viewer != 'information' && $showinformation)
+    #set ($discard = $docextralinks.add(["information", $msg.get("docextra.information"), -1, 'info-sign']))
+  #end
+#end
+###
+## Actions menu
+##
+#if(!$doc.isNew())
+  #xwikimenubuttonstart('' $msg.get('core.menu.moreactions') 'tmMoreActions' 'cog')
+  #submenuitem($doc.getURL('view', "xpage=print&amp;$!request.getQueryString()") $msg.get('core.menu.preview') 'tmPrintPreview', 'print')
+##
+## Export menu
+##
+  #submenuentrystart($msg.get('core.menu.export') 'tmExport' 'download-alt' 'pull-left')
+  ## Preserve the document query string.
+  #submenuitem($doc.getURL('view', "xpage=pdfoptions&amp;qs=$!escapetool.url($request.getQueryString())") $msg.get('core.menu.export.pdf') 'tmExportPdf')
+  #if("$!{oomanager.serverState}" == "Connected")
+    #submenuitem($doc.getURL('export', "format=odt&amp;$!request.getQueryString()") $msg.get('core.menu.export.odt') 'tmExportOdt')
+  #end
+  #submenuitem($doc.getURL('export', "format=rtf&amp;$!request.getQueryString()") $msg.get('core.menu.export.rtf') 'tmExportRtf')
+  #submenuitem($doc.getURL('export', "format=html&amp;$!request.getQueryString()") $msg.get('core.menu.export.html') 'tmExportHtml')
+  #if($hasAdmin)
+    #submenuitem($doc.getURL('export', "format=xar&amp;name=$escapetool.url($doc.fullName)&amp;pages=$escapetool.url($doc.fullName)&amp;$!docvariant") $msg.get('core.menu.export.xar') 'tmExportXar')
+  #end
+  #xwikitopmenuentryend()
+  #submenuitem($doc.getURL('view', "viewer=code") $msg.get('core.menu.view.source') 'tmViewSource' 'quote-left')
+  #if($docextralinks.size() > 0)
+    #submenuseparator()
+  #end
+  #foreach($docextralink in $docextralinks)
+    #set ($extraAnchor = $docextralink.get(0))
+    #set ($extraText = $escapetool.xml($docextralink.get(1)))
+    #set ($extraCount = $docextralink.get(2))
+    #set ($extraIcon = $docextralink.get(3))
+    #if($extraCount >= 0)
+      #set ($extraText = "$extraText (${escapetool.xml(${extraCount})})")
+    #end
+    #submenuitem($doc.getURL('view', "viewer=$!{escapetool.url(${extraAnchor})}") $extraText "${escapetool.xml(${extraAnchor})}shortcut" $extraIcon)
+  #end
+  #xwikimenubuttonend()
+#end

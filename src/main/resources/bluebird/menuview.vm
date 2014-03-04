@@ -338,7 +338,7 @@
    #if($additionallangs.size() > 0)
     #xwikitopmenuentrystart('#' "#languageIcon($currentLanguage)" 'tmCurrentLang')
     #foreach($lang in $additionallangs)
-     #submenuitem($!doc.getURL("view", "language=$lang") "#languageIcon($lang) $services.localization.render($lang)" 'tm$langLang')
+     #submenuitem($!doc.getURL("view", "language=$lang") "#languageIcon($lang) $services.localization.render($lang)" 'tm${lang}Lang')
     #end
     #xwikitopmenuentryend()
    #else

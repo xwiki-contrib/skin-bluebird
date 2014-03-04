@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.xwiki.platform</groupId>
     <artifactId>xwiki-platform-core</artifactId>
-    <version>4.4.1</version>
+    <version>5.4.2</version>
   </parent>
   <artifactId>xwiki-contrib-bluebird</artifactId>
   <name>XWiki Contrib - Bluebird</name>
@@ -33,6 +33,9 @@
     <!-- Don't run CLIRR here since there's no Java code. -->
     <xwiki.clirr.skip>true</xwiki.clirr.skip>
     <downloaded-resources-output-directory>${project.build.directory}/generated-resources/maven-download-plugin</downloaded-resources-output-directory>
+    <bootstrap-resources-directory>${downloaded-resources-output-directory}/bootstrap</bootstrap-resources-directory>
+    <fontawesome-resources-directory>${downloaded-resources-output-directory}/font-awesome</fontawesome-resources-directory>
+    <bootwatch-resources-directory>${downloaded-resources-output-directory}/bootwatch</bootwatch-resources-directory>
   </properties>
   <build>
     <plugins>
@@ -51,18 +54,6 @@
               <url>http://getbootstrap.com/2.3.2/assets/bootstrap.zip</url>
               <outputDirectory>${downloaded-resources-output-directory}</outputDirectory>
               <unpack>true</unpack>
-            </configuration>
-          </execution>
-          <execution>
-            <id>get-jquery</id>
-            <phase>generate-resources</phase>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>http://code.jquery.com/jquery-1.11.0.min.js</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootstrap/js</outputDirectory>
-              <outputFileName>jquery.min.js</outputFileName>
             </configuration>
           </execution>
           <execution>
@@ -85,7 +76,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/amelia/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>amelia.min.css</outputFileName>
             </configuration>
           </execution>
@@ -97,7 +88,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/cerulean/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>cerulean.min.css</outputFileName>
             </configuration>
           </execution>
@@ -109,7 +100,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/cosmo/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>cosmo.min.css</outputFileName>
             </configuration>
           </execution>
@@ -121,7 +112,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/cyborg/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>cyborg.min.css</outputFileName>
             </configuration>
           </execution>
@@ -133,7 +124,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/flatly/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>flatly.min.css</outputFileName>
             </configuration>
           </execution>
@@ -145,7 +136,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/journal/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>journal.min.css</outputFileName>
             </configuration>
           </execution>
@@ -157,7 +148,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/readable/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>readable.min.css</outputFileName>
             </configuration>
           </execution>
@@ -169,7 +160,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/simplex/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>simplex.min.css</outputFileName>
             </configuration>
           </execution>
@@ -181,7 +172,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/slate/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>slate.min.css</outputFileName>
             </configuration>
           </execution>
@@ -193,7 +184,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/spacelab/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>spacelab.min.css</outputFileName>
             </configuration>
           </execution>
@@ -205,7 +196,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/superhero/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>superhero.min.css</outputFileName>
             </configuration>
           </execution>
@@ -217,7 +208,7 @@
             </goals>
             <configuration>
               <url>http://bootswatch.com/2/united/bootstrap.min.css</url>
-              <outputDirectory>${downloaded-resources-output-directory}/bootwatch</outputDirectory>
+              <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>united.min.css</outputFileName>
             </configuration>
           </execution>

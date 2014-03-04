@@ -602,4 +602,20 @@ div#xwikiobjects input[type="checkbox"], div#xwikiclassproperties input[type="ch
   border-left-color: #ECECEC !important;
 }
 
+.hidden {
+    display: none;
+}
+.clearfloats {
+    clear: both;
+    height: 1px;
+    margin: -1px 220px 0;
+    overflow: hidden;
+}
 
+.navbar .nav > li:hover > .dropdown-menu {
+    display: block;
+}
+
+.navbar .dropdown-menu {
+    margin-top: -2px;
+}

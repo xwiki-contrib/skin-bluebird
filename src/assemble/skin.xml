@@ -35,21 +35,21 @@
     </fileSet>
     <!-- Add Bootstrap files -->
     <fileSet>
-      <directory>${downloaded-resources-output-directory}/bootstrap</directory>
+      <directory>${bootstrap-resources-directory}</directory>
       <outputDirectory>bluebird</outputDirectory>
     </fileSet>
     <!-- Add Font Awesome files -->
     <fileSet>
-      <directory>${downloaded-resources-output-directory}/font-awesome/css</directory>
+      <directory>${fontawesome-resources-directory}/css</directory>
       <outputDirectory>bluebird/css</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>${downloaded-resources-output-directory}/font-awesome/font</directory>
+      <directory>${fontawesome-resources-directory}/font</directory>
       <outputDirectory>bluebird/font</outputDirectory>
     </fileSet>
     <!-- Add Bootwatch files -->
     <fileSet>
-      <directory>${downloaded-resources-output-directory}/bootwatch</directory>
+      <directory>${bootwatch-resources-directory}</directory>
       <outputDirectory>bluebird/css</outputDirectory>
     </fileSet>
   </fileSets>

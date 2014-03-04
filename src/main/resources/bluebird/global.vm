@@ -1,0 +1,3 @@
+#foreach ($uix in $services.uix.getExtensions('org.xwiki.platform.template.header.after'))
+  $services.rendering.render($uix.execute(), 'xhtml/1.0')
+#end

@@ -87,6 +87,8 @@
 #set($displayMainMenu = true)
 #set($displayDocExtra = true)
 #set($displayShortcuts = true)
+#set($displayQuickSearch = true)
+#set($displayLanguageChoice = true)
 #set($displayBreadcrumb = true)
 #set($displayDocTitle = true)
 

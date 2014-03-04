@@ -6,13 +6,13 @@
   #template("documentTags.vm")
   <div id="xdocAuthors pull-right">
     <div class="xdocCreation pull-right"> ## Creation
-      <small>$msg.get('core.footer.creation', [$xwiki.getUserName($doc.creator), $xwiki.formatDate($doc.creationDate)])<br/></small>
+      <small>$services.localization.render('core.footer.creation', [$xwiki.getUserName($doc.creator), $xwiki.formatDate($doc.creationDate)])<br/></small>
       #if($tdoc.realLanguage != $doc.realLanguage)
-        <small>$msg.get('core.footer.translationCreation', [$tdoc.realLanguage, $xwiki.getUserName($tdoc.creator), $xwiki.formatDate($tdoc.creationDate)])<br/></small>
+        <small>$services.localization.render('core.footer.translationCreation', [$tdoc.realLanguage, $xwiki.getUserName($tdoc.creator), $xwiki.formatDate($tdoc.creationDate)])<br/></small>
       #end
     </div>
 ##    <div class="xdocLastModification"> ## Last modification
-##      $msg.get('core.footer.modification', [$xwiki.getUserName($tdoc.author), $xwiki.formatDate($tdoc.date)])
+##      $services.localization.render('core.footer.modification', [$xwiki.getUserName($tdoc.author), $xwiki.formatDate($tdoc.date)])
 ##    </div>
     <div class="clearfix"></div>
   </div>
@@ -32,7 +32,7 @@
   #if ($showcomments)
     $xwiki.jsfx.use('uicomponents/viewers/comments.js', {'forceSkinAction': true, 'language': ${xcontext.language}})
     $xwiki.ssfx.use('uicomponents/viewers/comments.css', true)
-    #set ($discard = $docextras.add(['Comments', 'comments', $msg.get('docextra.comments'), $doc.getObjects('XWiki.XWikiComments').size(), 'commentsinline.vm', $msg.get('core.shortcuts.view.comments'), 'comments-alt']))
+    #set ($discard = $docextras.add(['Comments', 'comments', $services.localization.render('docextra.comments'), $doc.getObjects('XWiki.XWikiComments').size(), 'commentsinline.vm', $services.localization.render('core.shortcuts.view.comments'), 'comments-alt']))
   #end
   #if ($showannotations)
     #if (!$annotationCount)
@@ -41,7 +41,7 @@
       ## config document. This however should not happen.
       #set ($annotationCount = $doc.getObjects('AnnotationCode.AnnotationClass').size())
     #end
-    #set ($discard = $docextras.add(['Annotations', 'annotations', $msg.get('docextra.annotations'), $annotationCount, 'annotationsinline.vm', $msg.get('core.shortcuts.view.annotations'), 'flag']))
+    #set ($discard = $docextras.add(['Annotations', 'annotations', $services.localization.render('docextra.annotations'), $annotationCount, 'annotationsinline.vm', $services.localization.render('core.shortcuts.view.annotations'), 'flag']))
   #end
   #if ($showattachments)
     $xwiki.jsfx.use('uicomponents/widgets/upload.js', {'forceSkinAction': true, 'language': ${xcontext.language}})
@@ -54,15 +54,15 @@
       ## Prepend request parameter
       #set ($sortAttachmentsBy = "&sortAttachmentsBy=$escapetool.url(${sortAttachmentsBy})")
     #end
-    #set ($discard = $docextras.add(['Attachments', 'attachments', $msg.get('docextra.attachments'), $doc.getAttachmentList().size(), "attachmentsinline.vm$!{sortAttachmentsBy}", $msg.get('core.shortcuts.view.attachments'), 'paper-clip']))
+    #set ($discard = $docextras.add(['Attachments', 'attachments', $services.localization.render('docextra.attachments'), $doc.getAttachmentList().size(), "attachmentsinline.vm$!{sortAttachmentsBy}", $services.localization.render('core.shortcuts.view.attachments'), 'paper-clip']))
   #end
   #if ($showhistory)
     ## Pagination style
     $xwiki.ssfx.use('uicomponents/pagination/pagination.css', true)##
-    #set ($discard = $docextras.add(['History', 'history', $msg.get('docextra.history'), -1, 'historyinline.vm', $msg.get('core.shortcuts.view.history'), 'time']))
+    #set ($discard = $docextras.add(['History', 'history', $services.localization.render('docextra.history'), -1, 'historyinline.vm', $services.localization.render('core.shortcuts.view.history'), 'time']))
   #end
   #if ($showinformation)
-    #set ($discard = $docextras.add(['Information', 'information', $msg.get('docextra.information'), -1, 'informationinline.vm', $msg.get('core.shortcuts.view.information'), 'info-sign']))
+    #set ($discard = $docextras.add(['Information', 'information', $services.localization.render('docextra.information'), -1, 'informationinline.vm', $services.localization.render('core.shortcuts.view.information'), 'info-sign']))
   #end
 #end
 ##
@@ -83,7 +83,7 @@
         #foreach($docextra in $docextras)
           <li id="${docextra.get(0)}tab">
             <a id="${docextra.get(0)}link" href="$doc.getURL('view', "viewer=${docextra.get(1)}")">
-              <span class="icon-$docextra.get(6)"></span> $docextra.get(2) #if($docextra.get(3) >= 0) <span class="itemCount">$msg.get('docextra.extranb', [$docextra.get(3)])</span> #end
+              <span class="icon-$docextra.get(6)"></span> $docextra.get(2) #if($docextra.get(3) >= 0) <span class="itemCount">$services.localization.render('docextra.extranb', [$docextra.get(3)])</span> #end
             </a>
           </li>
         #end

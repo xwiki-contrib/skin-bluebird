@@ -29,7 +29,4 @@
 <link rel="stylesheet" href="$xwiki.getSkinFile('css/font-awesome-ie7.min.css', true)">
 <![endif]-->
 ## Hook for inserting CSS skin extensions
-## - Skin JAR extension hook. Placed first to allow other skin extensions to override it.
-<!-- com.xpn.xwiki.plugin.skinx.CssResourceSkinExtensionPlugin -->
-<!-- com.xpn.xwiki.plugin.skinx.CssSkinExtensionPlugin -->
-<!-- com.xpn.xwiki.plugin.skinx.CssSkinFileExtensionPlugin -->
+#styleSheetExtensionHooks

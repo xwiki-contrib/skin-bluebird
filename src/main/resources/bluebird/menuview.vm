@@ -3,7 +3,7 @@
 <div id="menuview">
 <div id="mainmenu" class="navbar navbar-inverse navbar-static-top">
   <div class="navbar-inner">
-    <div class="container">
+    <div class="container-fluid">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -32,121 +32,148 @@
 #end
         <img src="$!logourl" alt="Logo"/>
       </a>
-
       <div class="nav-collapse collapse">
-        <strong id="xwikimenutitle" class="hidden">$msg.get('core.menu.main.title')</strong>
+        <strong id="xwikimenutitle" class="hidden">$services.localization.render('core.menu.main.title')</strong>
         <ul class="nav">
 #xwikitopmenuseparator()
-#set ($workspaceManagerMainDocumentReference = $services.model.createDocumentReference($xcontext.mainWikiName, 'WorkspaceManager', 'WebHome'))
-#set ($isWorkspaceManagerAppInstalled = $xwiki.exists($workspaceManagerMainDocumentReference))
-#set ($isWorkspace = $services.workspace.isWorkspace($xcontext.database))
+#set ($discard = $xwiki.ssfx.use('uicomponents/wiki/wiki.css', true))
+#set ($isWikiAPIAvailable = ("!$services.wiki" != '') && ("!$services.wiki.user" != ''))
+#set ($mainWikiHomeDocumentReference = $services.model.createDocumentReference($xcontext.mainWikiName, 'Main', 'WebHome'))
+#set ($WikiManagerMainDocReference = $services.model.createDocumentReference($xcontext.mainWikiName, 'WikiManager', 'WebHome'))
+#set ($isWikiUIAvailable = $xwiki.exists($WikiManagerMainDocReference))
 #set ($isMainWikiUser = ($xcontext.mainWikiName == "$!{xcontext.userReference.wikiReference.name}"))
+#set ($isAdminAppInstalled = $xwiki.exists('XWiki.AdminSheet'))
 ##
-## Main Wiki
+## Home Menu
 ##
-#set ($hasMainWikiAdmin = $xwiki.hasAccessLevel('admin', $xcontext.user, "${xcontext.mainWikiName}:XWiki.XWikiPreferences"))
-#set ($mainWikiAllDocsDocumentReference = $services.model.createDocumentReference($xcontext.mainWikiName, 'Main', 'AllDocs'))
-#set ($displayMainWikiSubmenu = $hasWatch || $hasMainWikiAdmin || $xwiki.exists($mainWikiAllDocsDocumentReference))
-#if ($isWorkspaceManagerAppInstalled && !$xcontext.isMainWiki() && ($isMainWikiUser || ($isGuest && $isWorkspace)))
-  #set ($mainWikiHomeDocumentReference = $services.model.createDocumentReference($xcontext.mainWikiName, 'Main', 'WebHome'))
-  #if (!$displayMainWikiSubmenu)
-    #xwikitopmenuentry($xwiki.getURL($mainWikiHomeDocumentReference) 'Main' 'tmMainWiki' 'book')
-  #else
-    #xwikitopmenuentrystart('Main' 'tmMainWiki' 'book')
+## This menu is displayed if:
+## - Wiki UI is available
+## - The current wiki is the main wiki OR the current wiki has support for local users only
+#set ($displayHomeMenu = $isWikiUIAvailable && ($xcontext.isMainWiki() || ("$!services.wiki.user" != '' && $services.wiki.user.getUserScope()=='GLOBAL_ONLY')))
+#if ($displayHomeMenu)
+  #xwikitopmenuentrystart($xwiki.getURL($mainWikiHomeDocumentReference) $services.localization.render('core.menu.type.home') 'tmMainWiki' 'book')
+    #set ($hasPreviousMenuSection = false)
+## $displayCreateWiki is determined by:
+## - the wiki app is installed
+## - and the user has the right to create a wiki
+## - and the wiki application has been installed.
+## (in the future the last condition will be removed since we will use the Distribution Wizard for wiki creation)
+    #if ($hasWatch && $xcontext.isMainWiki())
+      #set ($watchClasses = '')
+      #set ($unwatchClasses = 'hidden')
+      #if ($xwiki.watchlist.isWikiWatched())
+        #set ($watchClasses = 'hidden')
+        #set ($unwatchClasses = '')
+      #end
+      #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=addwiki')&amp;xredirect=$escapetool.url($doc.getURL())" $services.localization.render('core.menu.watchlist.add.wiki') 'tmWatchWiki', 'eye-open' $watchClasses)
+      #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=removewiki')&amp;xredirect=$escapetool.url($doc.getURL())" $services.localization.render('core.menu.watchlist.remove.wiki') 'tmUnwatchWiki', 'eye-close' $unwatchClasses)
+      #set ($hasPreviousMenuSection = true)
+    #end
+    #set ($hasHomeWikiAdmin = $xwiki.hasAccessLevel('admin', $xcontext.user, "${xcontext.mainWikiName}:XWiki.XWikiPreferences"))
+    #if ($hasHomeWikiAdmin)
+      #set ($adminRef = $services.model.createDocumentReference($xcontext.mainWikiName, 'XWiki', 'XWikiPreferences'))
+      #set ($adminwikiaction = $!xwiki.getURL($adminRef, 'admin'))
+      #set ($importaction = $!xwiki.getURL($adminRef, 'import'))
+      #set ($homeAdminSheetRef = $services.model.createDocumentReference($xwiki.mainWikiName, 'XWiki', 'AdminSheet'))
+      #set ($isHomeAdminAppInstalled = $xwiki.exists($homeAdminSheetRef))
+      #if ($isHomeAdminAppInstalled)
+        #if($xcontext.isMainWiki())
+          #submenuitem($adminwikiaction $services.localization.render('core.menu.admin.wiki') 'tmAdminWiki', 'wrench')
+        #else
+          #submenuitem($adminwikiaction $services.localization.render('core.menu.admin') 'tmAdminWiki', 'wrench')
+        #end
+      #else
+        #submenuitem($importaction $services.localization.render('core.menu.admin') 'tmAdminWiki' 'wrench')
+      #end
+      #set ($hasPreviousMenuSection = true)
+    #end
+    #if ($hasPreviousMenuSection)
+      #submenuseparator()
       #set ($hasPreviousMenuSection = false)
-      #set ($hasCreateWorkspace = $isWorkspaceManagerAppInstalled && $isMainWikiUser &&
-  $services.workspace.canCreateWorkspace($xcontext.user, "workspace0reserved0for0internal0xwiki0usage${mathtool.random(0, 999)}"))
-      #if ($hasCreateWorkspace)
-        #set ($createWorkspaceDocumentReference = $services.model.createDocumentReference('xwiki', 'WorkspaceManager', 'CreateNewWorkspace'))
-        #submenuitem("$xwiki.getURL($createWorkspaceDocumentReference)" $msg.get('workspacemanager.menu.create') 'tmCreateWorkspace', '')
-        #set ($hasPreviousMenuSection = true)
-      #end
-      #if ($hasMainWikiAdmin)
-        #set ($mainWikiAdministrationDocumentReference = $services.model.createDocumentReference($xcontext.mainWikiName, 'XWiki', 'XWikiPreferences'))
-        #submenuitem("$xwiki.getURL($mainWikiAdministrationDocumentReference, 'admin', '')" $msg.get('workspacemanager.menu.mainwiki.admin') 'tmAdminMainWiki' 'wrench')
-        #set ($hasPreviousMenuSection = true)
-      #end
-      #if($hasPreviousMenuSection)
+    #end
+    #submenuitem("$xwiki.getURL($WikiManagerMainDocReference)" $services.localization.render('platform.wiki.menu.wikiindex') 'tmWikiIndex' 'home')
+    #set ($homeDocumentIndexRef = $services.model.createDocumentReference($xcontext.mainWikiName, 'Main', 'AllDocs'))
+    #if ($xwiki.exists($homeDocumentIndexRef))
+      #submenuitem($xwiki.getURL($homeDocumentIndexRef) $services.localization.render('core.menu.wiki.documentindex') 'tmWikiDocumentIndex' 'book')
+    #end
+    #set ($homeUserIndexRef = $services.model.createDocumentReference($xcontext.mainWikiName, 'Main', 'UserDirectory'))
+    #if ($xwiki.exists($homeUserIndexRef))
+      #submenuitem($xwiki.getURL($homeUserIndexRef) $services.localization.render('xe.panels.quicklinks.userdirectory') 'tmMainUserIndex' 'group')
+    #end
+    #set ($displayCreateWiki = $isWikiAPIAvailable && $isWikiUIAvailable && $hasCreateWiki)
+    #if ($displayCreateWiki)
         #submenuseparator()
-      #end
-      #submenuitem("$xwiki.getURL($workspaceManagerMainDocumentReference)" $msg.get('workspacemanager.menu.workspace.index') 'tmWorkspaceIndex' 'home')
-      #if ($xwiki.exists($mainWikiAllDocsDocumentReference))
-        #submenuitem("$xwiki.getURL($mainWikiAllDocsDocumentReference)" $msg.get('core.menu.wiki.documentindex') 'tmMainWikiDocumentIndex' 'book')
+        #set ($createWikiDocReference = $services.model.createDocumentReference('xwiki', 'WikiManager', 'CreateWiki'))
+        #submenuitem("$xwiki.getURL($createWikiDocReference)" $services.localization.render('platform.wiki.create.title') 'tmCreateWiki', 'globe')
         #set ($hasPreviousMenuSection = true)
-      #end
+    #end
     #xwikitopmenuentryend()
-  #end
 #end
 ##
 ## Wiki
 ##
-#set ($isAdminAppInstalled = $xwiki.exists('XWiki.AdminSheet'))
-#set ($canDeleteWorkspace = $isWorkspaceManagerAppInstalled && $services.workspace.canDeleteWorkspace($xcontext.user, $xcontext.database))
-#set ($displayWorkspaceDirectoryMenuEntry = $isWorkspaceManagerAppInstalled && $isMainWikiUser && $xcontext.isMainWiki())
-#set ($displayWikiSubmenu = $hasWatch || $hasGlobalAdmin || $xwiki.exists('Main.AllDocs') || $displayWorkspaceDirectoryMenuEntry || $canDeleteWorkspace)
-#set ($wikiEntryText = $msg.get('core.menu.type.wiki'))
+#set ($canDeleteWiki = $isWikiAPIAvailable && $isWikiUIAvailable && $services.wiki.mainWikiId != $services.wiki.currentWikiId && $services.wiki.canDeleteWiki($xcontext.user, $services.wiki.currentWikiId))
+#set ($displayWikiSubmenu = $hasWatch || $hasGlobalAdmin || $xwiki.exists('Main.AllDocs') || $canDeleteWiki)
 #set ($wikiEntryId = 'tmWiki')
-#if ($isWorkspaceManagerAppInstalled)
-  #if ($xcontext.isMainWiki() && $xwiki.isVirtualMode())
-    #set ($wikiEntryId = 'tmMainWiki')
-  #elseif ($isWorkspace)
-    #set ($wikiEntryId = 'tmWorkspace')
-  #end
+#set ($wikiName = $services.wiki.getById($xcontext.database).prettyName)
+## If no pretty name is available (no wiki script service or pretty name is empty), use the wiki name.
+#if ("$!wikiName.trim()" == '')
+  #set ($wikiName = $xcontext.getDatabase())
 #end
-#if ($xwiki.isVirtualMode() && $services.wikimanager)
-  #set ($wikiName = $services.wikimanager.getWikiDocument($xcontext.getDatabase()).getWikiPrettyName())
-  #if ("$!wikiName.trim()" == '')
-    #set ($wikiName = $xcontext.getDatabase())
+#set ($wikiEntryText = "${wikiName}")
+## The wiki menu is available if:
+## - OR WikiManager is not installed
+## - OR the wiki is not the home
+#if(!$isWikiUIAvailable || !$xcontext.isMainWiki())
+  #if($displayHomeMenu)
+    #xwikitopmenuseparator()
   #end
-  #set ($wikiEntryText = "${wikiName}")
-#end
-#if (!$displayWikiSubmenu)
-  #xwikitopmenuentry($xwiki.getURL($services.model.resolveDocument('', 'default', $doc.documentReference.extractReference('WIKI'))) $wikiEntryText $wikiEntryId 'globe')
-#else
-  #xwikitopmenuentrystart($wikiEntryText $wikiEntryId 'globe')
-  #set ($hasPreviousMenuSection = false)
-  #if ($hasWatch)
-    #set ($watchClasses = '')
-    #set ($unwatchClasses = 'hidden')
-    #if ($xwiki.watchlist.isWikiWatched())
-      #set ($watchClasses = 'hidden')
-      #set ($unwatchClasses = '')
+  #if(!$displayWikiSubmenu)
+    ## Only display a link to the wiki
+    #xwikitopmenuentry($xwiki.getURL($services.model.resolveDocument('', 'default', $doc.documentReference.extractReference('WIKI'))) $wikiEntryText $wikiEntryId 'hasIcon')
+  #else
+    ## Display a complete menu
+    #xwikitopmenuentrystart($xwiki.getURL($services.model.resolveDocument('', 'default', $doc.documentReference.extractReference('WIKI'))) $wikiEntryText $wikiEntryId 'globe')
+    #set ($hasPreviousMenuSection = false)
+    #if ($hasWatch)
+      #set ($watchClasses = '')
+      #set ($unwatchClasses = 'hidden')
+      #if ($xwiki.watchlist.isWikiWatched())
+        #set ($watchClasses = 'hidden')
+        #set ($unwatchClasses = '')
+      #end
+      #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=addwiki')&amp;xredirect=$escapetool.url($doc.getURL())" $services.localization.render('core.menu.watchlist.add.wiki') 'tmWatchWiki' 'eye-open' $watchClasses)
+      #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=removewiki')&amp;xredirect=$escapetool.url($doc.getURL())" $services.localization.render('core.menu.watchlist.remove.wiki') 'tmUnwatchWiki' 'eye-close' $unwatchClasses)
+      #set ($hasPreviousMenuSection = true)
     #end
-    #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=addwiki')&amp;xredirect=$escapetool.url($doc.getURL())" $msg.get('core.menu.watchlist.add.wiki') 'tmWatchWiki' 'eye-open' $watchClasses)
-    #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=removewiki')&amp;xredirect=$escapetool.url($doc.getURL())" $msg.get('core.menu.watchlist.remove.wiki') 'tmUnwatchWiki' 'eye-close' $unwatchClasses)
-    #set ($hasPreviousMenuSection = true)
-  #end
-  #if ($hasGlobalAdmin)
-    #set ($adminwikiaction = $!xwiki.getURL('XWiki.XWikiPreferences', 'admin'))
-    #set ($importaction = $!xwiki.getURL('XWiki.XWikiPreferences', 'import'))
-    #if ($isAdminAppInstalled)
-      #submenuitem($adminwikiaction $msg.get('core.menu.admin.wiki') 'tmAdminWiki', 'wrench')
-    #else
-      #submenuitem($importaction $msg.get('core.menu.admin') 'tmAdminWiki' 'wrench')
+    #if ($hasGlobalAdmin)
+      #set ($adminwikiaction = $!xwiki.getURL('XWiki.XWikiPreferences', 'admin'))
+      #set ($importaction = $!xwiki.getURL('XWiki.XWikiPreferences', 'import'))
+      #if ($isAdminAppInstalled)
+        #submenuitem($adminwikiaction $services.localization.render('core.menu.admin.wiki') 'tmAdminWiki', 'wrench')
+      #else
+        #submenuitem($importaction $services.localization.render('core.menu.admin') 'tmAdminWiki' 'wrench')
+      #end
+      #set ($hasPreviousMenuSection = true)
     #end
-    #set ($hasPreviousMenuSection = true)
-  #end
-  #if ($hasPreviousMenuSection && ($displayWorkspaceDirectoryMenuEntry || $xwiki.exists('Main.AllDocs')))
-    #submenuseparator()
-  #end
-  #if ($displayWorkspaceDirectoryMenuEntry)
-    #submenuitem("$xwiki.getURL($workspaceManagerMainDocumentReference)" $msg.get('workspacemanager.menu.workspace.index') 'tmWorkspaceIndex' 'book')
-    #set ($hasPreviousMenuSection = true)
-  #end
-  #if ($xwiki.exists('Main.AllDocs'))
-    #submenuitem("$xwiki.getURL('Main.AllDocs')" $msg.get('core.menu.wiki.documentindex') 'tmWikiDocumentIndex' 'book')
-    #set ($hasPreviousMenuSection = true)
-  #end
-  #if ($canDeleteWorkspace)
-    #if ($hasPreviousMenuSection)
-      #submenuseparator()
+    #if ($xwiki.exists('Main.AllDocs'))
+      #if ($hasPreviousMenuSection)
+        #submenuseparator()
+      #end
+      #submenuitem("$xwiki.getURL('Main.AllDocs')" $services.localization.render('core.menu.wiki.documentindex') 'tmWikiDocumentIndex' 'book')
+      #set ($hasPreviousMenuSection = true)
     #end
-    #set ($deleteWorkspacePageReference = $services.model.createDocumentReference($xcontext.mainWikiName, 'WorkspaceManager', 'DeleteWorkspaceCode'))
-    #set ($deleteUrl = $xwiki.getURL($deleteWorkspacePageReference, 'view', "workspaceId=${xcontext.database}&workspaceName=$wikiName"))
-    #submenuitem($deleteUrl $msg.get('workspacemanager.menu.workspace.delete') 'tmDeleteWorkspace' 'remove')
-    #set ($hasPreviousMenuSection = true)
+    #if ($canDeleteWiki)
+      #if ($hasPreviousMenuSection)
+        #submenuseparator()
+      #end
+      #set ($deleteWikiPageReference = $services.model.createDocumentReference($xcontext.mainWikiName, 'WikiManager', 'DeleteWiki'))
+      #set ($deleteUrl = $xwiki.getURL($deleteWikiPageReference, 'view', "wikiId=${services.wiki.currentWikiId}"))
+      #submenuitem($deleteUrl $services.localization.render('platform.wiki.menu.deletewiki') 'tmDeleteWiki' 'remove')
+      #set ($hasPreviousMenuSection = true)
+    #end
+    #xwikitopmenuentryend()
   #end
-  #xwikitopmenuentryend()
 #end
 ##
 ## Space
@@ -155,7 +182,7 @@
 #if (!$displaySpaceSubmenu)
   #xwikitopmenuentry($xwiki.getURL($services.model.resolveDocument('', 'default', $doc.documentReference.extractReference('SPACE'))) "$!{escapetool.xml($doc.space)}" 'tmSpace' 'folder-open')
 #else
-  #xwikitopmenuentrystart("$!{escapetool.xml($doc.space)}" 'tmSpace' 'folder-open')
+  #xwikitopmenuentrystart($xwiki.getURL($services.model.resolveDocument('', 'default', $doc.documentReference.extractReference('SPACE'))) "$!{escapetool.xml($doc.space)}" 'tmSpace' 'folder-open')
   #set ($hasPreviousMenuSection = false)
   #if ($hasWatch)
     #set ($watchClasses = '')
@@ -164,13 +191,14 @@
       #set ($watchClasses = 'hidden')
       #set ($unwatchClasses = '')
     #end
-    #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=addspace')&amp;xredirect=$escapetool.url($doc.getURL())" $msg.get('core.menu.watchlist.add.space', [$escapetool.xml($doc.space)]) 'tmWatchSpace' 'eye-open' $watchClasses)
-    #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=removespace')&amp;xredirect=$escapetool.url($doc.getURL())" $msg.get('core.menu.watchlist.remove.space') 'tmUnwatchSpace' 'eye-close' $unwatchClasses)
+    #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=addspace')&amp;xredirect=$escapetool.url($doc.getURL())" $services.localization.render('core.menu.watchlist.add.space', [$escapetool.xml($doc.space)]) 'tmWatchSpace' 'eye-open' $watchClasses)
+    #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=removespace')&amp;xredirect=$escapetool.url($doc.getURL())" $services.localization.render('core.menu.watchlist.remove.space') 'tmUnwatchSpace' 'eye-close' $unwatchClasses)
     #set ($hasPreviousMenuSection = true)
   #end
   #if ($hasSpaceAdmin && $isAdminAppInstalled)
-    #set ($adminspaceaction = $!xwiki.getURL("${doc.space}.WebPreferences", 'admin'))
-    #submenuitem($adminspaceaction $msg.get('core.menu.admin.space', [$escapetool.xml($doc.space)]) 'tmAdminSpace' 'wrench')
+    #set ($spaceAdminDocRef = $services.model.createDocumentReference($doc.wiki, $doc.space, 'WebPreferences'))
+    #set ($adminspaceaction = $xwiki.getURL($spaceAdminDocRef, 'admin'))
+    #submenuitem($adminspaceaction $services.localization.render('core.menu.admin.space', [$escapetool.xml($doc.space)]) 'tmAdminSpace' 'wrench')
     #set ($hasPreviousMenuSection = true)
   #end
   #if ($xwiki.exists('Main.SpaceIndex'))
@@ -178,7 +206,7 @@
       #submenuseparator()
     #end
     #set ($spaceIndexUrl = $xwiki.getURL('Main.SpaceIndex', 'view',"space=${escapetool.url($doc.space)}"))
-    #submenuitem($spaceIndexUrl $msg.get('core.menu.space.documentindex') 'tmSpaceDocumentIndex' 'book')
+    #submenuitem($spaceIndexUrl $services.localization.render('core.menu.space.documentindex') 'tmSpaceDocumentIndex' 'book')
     #set ($hasPreviousMenuSection = true)
   #end
   #if ($hasSpaceAdmin)
@@ -186,7 +214,7 @@
       #submenuseparator()
     #end
     #set ($spaceDeleteUrl = $!xwiki.getURL($services.model.resolveDocument('', 'default', $doc.documentReference.extractReference('SPACE')), 'deletespace'))
-    #submenuitem($spaceDeleteUrl $msg.get('core.menu.space.delete') 'tmSpaceDelete' 'remove')
+    #submenuitem($spaceDeleteUrl $services.localization.render('core.menu.space.delete') 'tmSpaceDelete' 'remove')
     #set ($hasPreviousMenuSection = true)
   #end
   #xwikitopmenuentryend()
@@ -201,21 +229,21 @@
 #set ($canWatch = !$doc.isNew() && $hasWatch)
 #set ($displayPageSubmenu = $canWatch || $canShare || $canCopy || $canDelete)
 #if (!$displayPageSubmenu)
-  #xwikitopmenuentry($xwiki.getURL("${doc.name}", 'view') "$!{escapetool.xml($doc.name)}" 'tmPage' 'file')
+  #xwikitopmenuentry($xwiki.getURL($doc.documentReference, 'view') "$!{escapetool.xml($doc.name)}" 'tmPage' 'file')
 #else
-  #xwikitopmenuentrystart("$!{escapetool.xml($doc.name)}" 'tmPage' 'file')
+  #xwikitopmenuentrystart($xwiki.getURL($doc.documentReference, 'view') "$!{escapetool.xml($doc.name)}" 'tmPage' 'file')
   #if ($canWatch)
-    #set ($watchClasses = 'hasIcon')
-    #set ($unwatchClasses = 'hasIcon hidden')
+   #set ($watchClasses = '')
+    #set ($unwatchClasses = 'hidden')
     #if ($xwiki.watchlist.isDocumentWatched())
-      #set ($watchClasses = 'hasIcon hidden')
-      #set ($unwatchClasses = 'hasIcon')
+      #set ($watchClasses = 'hidden')
+      #set ($unwatchClasses = '')
     #end
-    #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=adddocument')&amp;xredirect=$escapetool.url($doc.getURL())" $msg.get('core.menu.watchlist.add.page') 'tmWatchDocument' 'eye-open' $watchClasses)
-    #submenuitem("$doc.getURL('view', 'xpage=watch&amp;do=removedocument')&amp;xredirect=$escapetool.url($doc.getURL())" $msg.get('core.menu.watchlist.remove.page') 'tmUnwatchDocument' 'eye-close' $unwatchClasses)
+    #submenuitem("$xwiki.getURL($doc.documentReference, 'view', 'xpage=watch&amp;do=adddocument')&amp;xredirect=$escapetool.url($xwiki.getURL($doc.documentReference))" $services.localization.render('core.menu.watchlist.add.page') 'tmWatchDocument' 'eye-open' $watchClasses)
+    #submenuitem("$xwiki.getURL($doc.documentReference, 'view', 'xpage=watch&amp;do=removedocument')&amp;xredirect=$escapetool.url($xwiki.getURL($doc.documentReference))" $services.localization.render('core.menu.watchlist.remove.page') 'tmUnwatchDocument' 'eye-close' $unwatchClasses)
   #end
   #if ($canShare)
-    #submenuitem($doc.getURL('view', 'viewer=share') $msg.get('core.menu.share') 'tmActionShare' 'envelope')
+    #submenuitem($xwiki.getURL($doc.documentReference, 'view', 'viewer=share') $services.localization.render('core.menu.share') 'tmActionShare' 'envelope')
     #userPicker_import()
     $xwiki.jsx.use('XWiki.SharePage')
     $xwiki.ssx.use('XWiki.SharePage')
@@ -224,35 +252,37 @@
     #submenuseparator()
   #end
   #if ($canCopy)
-    #submenuitem($doc.getURL('view', 'xpage=copy') $msg.get('core.menu.copy') 'tmActionCopy' 'share')
+    #submenuitem($xwiki.getURL($doc.documentReference, 'view', 'xpage=copy') $services.localization.render('core.menu.copy') 'tmActionCopy' 'share')
   #end
   #if ($canDelete)
-    #submenuitem($doc.getURL('view', 'xpage=rename&amp;step=1') $msg.get('core.menu.rename') 'tmActionRename' 'edit')
-    #submenuitem($doc.getURL('delete', $!languageparams) $msg.get('core.menu.delete') 'tmActionDelete' 'remove')
+    #submenuitem($xwiki.getURL($doc.documentReference, 'view', 'xpage=rename&amp;step=1') $services.localization.render('core.menu.rename') 'tmActionRename' 'edit')
+    #submenuitem($xwiki.getURL($doc.documentReference, 'delete', $!languageparams) $services.localization.render('core.menu.delete') 'tmActionDelete', 'remove')
   #end
   #xwikitopmenuentryend()
   #if ($canDelete && $keyboardShortcutsEnabled)
     <script type="text/javascript">
       //<![CDATA[
-      shortcut.add("$msg.get('core.shortcuts.view.delete')",function() { location.href=$('tmActionDelete').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
-      shortcut.add("$msg.get('core.shortcuts.view.rename')",function() { location.href=$('tmActionRename').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+      shortcut.add("$services.localization.render('core.shortcuts.view.delete')",function() { location.href=$('tmActionDelete').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
+      shortcut.add("$services.localization.render('core.shortcuts.view.rename')",function() { location.href=$('tmActionRename').href; }, { 'type':'keypress', 'propagate':false, 'disable_in_input':true });
       //]]>
     </script>
   #end
 #end
+#if ($displayQuickSearch && ($xwiki.exists('Main.Search') || $xwiki.exists('Main.WebSearch')))
 #xwikitopmenuseparator()
          <li>
            <form class="form-search navbar-search" action="#if($xwiki.exists('Main.Search'))$xwiki.getURL('Main.Search')#else$xwiki.getURL('Main.WebSearch')#end">
              <div class="input-append">
-               <input id="headerglobalsearchinput" type="text" name="text" class="input-large search-query" placeholder="$msg.get('panels.search.inputText')">
-               <button type="submit" class="btn btn-inverse" value="$msg.get('panels.search.submit')" alt="$msg.get('panels.search.submit')">
+               <input id="headerglobalsearchinput" type="text" name="text" class="input-large search-query" placeholder="$services.localization.render('panels.search.inputText')">
+               <button type="submit" class="btn btn-inverse" value="$services.localization.render('panels.search.submit')" alt="$services.localization.render('panels.search.submit')">
                 <i class="icon-search icon-white"></i>
-                <label style="display:none" for="headerglobalsearchinput">$msg.get('panels.search.inputLabel')</label>
+                <label style="display:none" for="headerglobalsearchinput">$services.localization.render('panels.search.inputLabel')</label>
                </button>
              </div>
            </form>
          </li>
        </ul>
+#end
        <ul class="nav pull-right">
 #xwikitopmenuseparator()
 ##
@@ -260,23 +290,23 @@
 ##
 #if (!$isGuest)
 #if ($isSuperAdmin)
-  #xwikitopmenuentrystart($!msg.get('superadmin') 'tmUser' 'user')
+  #xwikitopmenuentrystart('#' $!services.localization.render('superadmin') 'tmUser' 'user')
 #else
-  #xwikitopmenuentrystart("$!xwiki.getUserName($xcontext.user, false)" 'tmUser' 'user')
-  #submenuitem($xwiki.getURL($xcontext.user, 'view') $msg.get('core.menu.profile') 'tmProfile' 'user')
-  #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=preferences') $msg.get('core.menu.userPreferences') 'tmUserPreferences' 'wrench')
+  #xwikitopmenuentrystart($xwiki.getURL($xcontext.user, 'view') "$!xwiki.getUserName($xcontext.user, false)" 'tmUser' 'user')
+  #submenuitem($xwiki.getURL($xcontext.user, 'view') $services.localization.render('core.menu.profile') 'tmProfile' 'user')
+  #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=preferences') $services.localization.render('core.menu.userPreferences') 'tmUserPreferences' 'wrench')
   #if ($hasWatch)
-    #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=watchlist') $msg.get('core.menu.watchlist.management') 'tmWatchlistManager' 'rss')
-    #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=network') $msg.get('core.menu.network') 'tmUserNetwork' 'group')
+    #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=watchlist') $services.localization.render('core.menu.watchlist.management') 'tmWatchlistManager' 'rss')
+    #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=network') $services.localization.render('core.menu.network') 'tmUserNetwork' 'group')
   #end
-  #if ($isWorkspaceManagerAppInstalled && $isMainWikiUser)
-    #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=workspaces') $msg.get('workspacemanager.menu.user.workspaces') 'tmUserWorkspaces' '')
+  #if ($isWikiUIAvailable && $isMainWikiUser)
+    #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=wikis') $services.localization.render('platform.wiki.menu.userwikis') 'tmUserWikis' 'globe')
   #end
-  #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=dashboard') $msg.get('core.menu.userDashboard') 'tmUserDashboard' 'home')
+  #submenuitem($xwiki.getURL($xcontext.user, 'view', 'category=dashboard') $services.localization.render('core.menu.userDashboard') 'tmUserDashboard' 'home')
   #submenuseparator()
 #end
   #set ($logouturl = $xwiki.getURL('XWiki.XWikiLogout', 'logout', "xredirect=$escapetool.url($xwiki.relativeRequestURL)"))
-  #submenuitem($!logouturl $!msg.get('logout') 'tmLogout' 'off')
+  #submenuitem($!logouturl $!services.localization.render('logout') 'tmLogout' 'off')
   #xwikitopmenuentryend()
 #end
 ##
@@ -284,14 +314,14 @@
 #if (!$xcontext.action.startsWith('login'))
   #if ($isGuest)
     #set ($loginurl = $xwiki.getURL('XWiki.XWikiLogin', 'login', "xredirect=$escapetool.url($xwiki.relativeRequestURL)"))
-    #xwikitopmenuentry($!loginurl $!msg.get('login') 'tmLogin' 'off')
+    #xwikitopmenuentry($!loginurl $!services.localization.render('login') 'tmLogin' 'off')
   #end
 #end
 #if ($isGuest && $xwiki.hasAccessLevel('register', 'XWiki.XWikiPreferences'))
   #set ($regurl = $xwiki.getURL('XWiki.Register', 'register'))
-  #xwikitopmenuentry($!regurl $!msg.get('core.register') 'tmRegister')
+  #xwikitopmenuentry($!regurl $!services.localization.render('core.register') 'tmRegister')
 #end
-#if($xwiki.isMultiLingual())
+#if($displayLanguageChoice && $xwiki.isMultiLingual())
   #set($currentLanguage = "$!{tdoc.realLanguage}")
   #set($originalLanguage = "$!{doc.realLanguage}")
   #if($currentLanguage != '')
@@ -306,9 +336,9 @@
     #end
    #end
    #if($additionallangs.size() > 0)
-    #xwikitopmenuentrystart("#languageIcon($currentLanguage)" 'tmCurrentLang')
+    #xwikitopmenuentrystart('#' "#languageIcon($currentLanguage)" 'tmCurrentLang')
     #foreach($lang in $additionallangs)
-     #submenuitem($!doc.getURL("view", "language=$lang") "#languageIcon($lang) $msg.get($lang)" 'tm$langLang')
+     #submenuitem($!doc.getURL("view", "language=$lang") "#languageIcon($lang) $services.localization.render($lang)" 'tm$langLang')
     #end
     #xwikitopmenuentryend()
    #else

@@ -28,7 +28,7 @@
   </parent>
   <groupId>org.xwiki.contrib</groupId>
   <artifactId>skin-bluebird</artifactId>
-  <version>5.4.2-1</version>
+  <version>5.4.2-2-SNAPSHOT</version>
   <name>XWiki Contrib - Bluebird Skin</name>
   <packaging>pom</packaging>
   <description>An experimental skin based on bootstrap and inspired by the Flamingo proposal.</description>
@@ -51,7 +51,7 @@
     <connection>scm:git:git://github.com/xwiki-contrib/skin-bluebird.git</connection>
     <developerConnection>scm:git:git@github.com:xwiki-contrib/skin-bluebird.git</developerConnection>
     <url>https://github.com/xwiki-contrib/skin-bluebird</url>
-    <tag>skin-bluebird-5.4.2-1</tag>
+    <tag>HEAD</tag>
   </scm>
   <dependencies>
     <dependency>

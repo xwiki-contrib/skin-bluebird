@@ -1,38 +1,14 @@
-/* Allow inverting left and right column in row-fluid */
-.row-fluid .pull-left[class*="span"] {
-    float: none;
-    margin-left: 0;
-    margin-right: 2.1277%;
-    *margin-right: 2.0745%;
-}
-@media (max-width: 979px) and (min-width: 768px) {
-    .row-fluid .pull-left[class*="span"] {
-        margin-right: 2.7624%;
-        *margin-right: 2.7092%;
-    }
-}
-@media (min-width: 1200px) {
-    .row-fluid .pull-left[class*="span"] {
-        margin-right: 2.5641%;
-        *margin-right: 2.5109%;
-    }
-}
-
-.well .nav-header {
-    padding-top: 0;
-}
-
-.main {
-    padding: 15px;
-}
-
 /* menuview */
-.navbar .brand {
-    padding: 6px 20px;
+.navbar .navbar-brand {
+    padding: 10px 20px;
 }
 
 .langicon {
     margin-top: -4px;
+}
+
+.navbar-search {
+    width: 250px;
 }
 
 /* breadcrumb */
@@ -42,9 +18,12 @@
     margin-bottom: 0;
 }
 
-/* content */
-#mainContentArea, #mainEditArea {
-    margin-top: 10px;
+.breadcrumb>li+li:before {
+    content: "\00bb\00a0"
+}
+
+.page-header {
+    margin-top: 0;
 }
 
 .edit_section {
@@ -66,14 +45,6 @@
 }
 
 /* panels */
-.panels {
-    margin-top: 20px;
-}
-
-.panel {
-    padding: 10px 19px;
-}
-
 .panelitem {
     display: block;
     overflow: hidden;
@@ -88,7 +59,7 @@
 
 .panel ul {
     list-style-type: none;
-    margin: 0;
+    margin: 0 0 0 -40px;
 }
 
 /* docextra */
@@ -157,7 +128,7 @@ label input[type="radio"], input[type="checkbox"] {
 }
 
 /* -----------------------Tables-------------------------*/
-.paginationFilter .pagination {
+.pagination {
     margin: 0;
 }
 
@@ -504,7 +475,7 @@ div#xwikiobjects input[type="checkbox"], div#xwikiclassproperties input[type="ch
 
 .vertical-menu ul {
     list-style-type: none;
-    margin: 0;
+    margin: 0 0 0 -40px;
 }
 .vertical-menu ul ul ul {
     margin-left: 2em;
@@ -599,6 +570,10 @@ color: $theme.menuLinkColor;
 }
 .vertical-menu .current-group:after {
     border-left-color: #ECECEC !important;
+}
+
+.muted {
+    color: #999;
 }
 
 .hidden {

@@ -79,9 +79,9 @@
   ##################
   ##   Edit zone  ##
   ##################
-  <div id="xwikieditor" class="container-fluid">
-  <div class="row-fluid">
-  <div id="editcolumn" class="editor editor-${editor} span9">
+  <div id="xwikieditor" class="container">
+  <div class="row">
+  <div id="editcolumn" class="editor editor-${editor} col-md-9">
   <div id="mainEditArea">
   #template("hierarchy.vm")
   ## should be editmenu, but cause fix style
@@ -121,7 +121,7 @@
   </div> ## mainEditArea
   </div> ## editcolumn
   #template("editpanels.vm")
-  </div> ## row-fluid
+  </div> ## row
   </div> ## xwikieditor
   ##
   ## Footer

@@ -3,5 +3,4 @@
 ##
   <div id="document-info" class="muted"> ## Last modification
     <small>$services.localization.render('core.footer.modification', [$xwiki.getUserName($tdoc.author), $xwiki.formatDate($tdoc.date)])</small>
-    <hr/>
   </div>

@@ -31,14 +31,14 @@
   <version>5.4.2-2-SNAPSHOT</version>
   <name>XWiki Contrib - Bluebird Skin</name>
   <packaging>pom</packaging>
-  <description>An experimental skin based on bootstrap and inspired by the Flamingo proposal.</description>
+  <description>An experimental skin based on Bootstrap and inspired by the Flamingo proposal.</description>
   <properties>
     <xwiki.extension.name>Bluebird Skin</xwiki.extension.name>
     <!-- Don't run CLIRR here since there's no Java code. -->
     <xwiki.clirr.skip>true</xwiki.clirr.skip>
     <downloaded-resources-output-directory>${project.build.directory}/generated-resources/maven-download-plugin</downloaded-resources-output-directory>
-    <bootstrap-resources-directory>${downloaded-resources-output-directory}/bootstrap</bootstrap-resources-directory>
-    <fontawesome-resources-directory>${downloaded-resources-output-directory}/font-awesome</fontawesome-resources-directory>
+    <bootstrap-resources-directory>${downloaded-resources-output-directory}/bootstrap-3.1.1-dist</bootstrap-resources-directory>
+    <fontawesome-resources-directory>${downloaded-resources-output-directory}/font-awesome-4.0.3</fontawesome-resources-directory>
     <bootwatch-resources-directory>${downloaded-resources-output-directory}/bootwatch</bootwatch-resources-directory>
   </properties>
   <developers>
@@ -75,7 +75,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://getbootstrap.com/2.3.2/assets/bootstrap.zip</url>
+              <url>https://github.com/twbs/bootstrap/releases/download/v3.1.1/bootstrap-3.1.1-dist.zip</url>
               <outputDirectory>${downloaded-resources-output-directory}</outputDirectory>
               <unpack>true</unpack>
             </configuration>
@@ -87,7 +87,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://fortawesome.github.io/Font-Awesome/3.2.1/assets/font-awesome.zip</url>
+              <url>http://fortawesome.github.io/Font-Awesome/assets/font-awesome-4.0.3.zip</url>
               <outputDirectory>${downloaded-resources-output-directory}</outputDirectory>
               <unpack>true</unpack>
             </configuration>
@@ -99,7 +99,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/amelia/bootstrap.min.css</url>
+              <url>http://bootswatch.com/amelia/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>amelia.min.css</outputFileName>
             </configuration>
@@ -111,7 +111,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/cerulean/bootstrap.min.css</url>
+              <url>http://bootswatch.com/cerulean/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>cerulean.min.css</outputFileName>
             </configuration>
@@ -123,7 +123,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/cosmo/bootstrap.min.css</url>
+              <url>http://bootswatch.com/cosmo/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>cosmo.min.css</outputFileName>
             </configuration>
@@ -135,7 +135,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/cyborg/bootstrap.min.css</url>
+              <url>http://bootswatch.com/cyborg/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>cyborg.min.css</outputFileName>
             </configuration>
@@ -147,7 +147,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/flatly/bootstrap.min.css</url>
+              <url>http://bootswatch.com/flatly/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>flatly.min.css</outputFileName>
             </configuration>
@@ -159,7 +159,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/journal/bootstrap.min.css</url>
+              <url>http://bootswatch.com/journal/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>journal.min.css</outputFileName>
             </configuration>
@@ -171,7 +171,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/readable/bootstrap.min.css</url>
+              <url>http://bootswatch.com/readable/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>readable.min.css</outputFileName>
             </configuration>
@@ -183,7 +183,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/simplex/bootstrap.min.css</url>
+              <url>http://bootswatch.com/simplex/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>simplex.min.css</outputFileName>
             </configuration>
@@ -207,7 +207,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/spacelab/bootstrap.min.css</url>
+              <url>http://bootswatch.com/spacelab/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>spacelab.min.css</outputFileName>
             </configuration>
@@ -219,7 +219,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/superhero/bootstrap.min.css</url>
+              <url>http://bootswatch.com/superhero/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>superhero.min.css</outputFileName>
             </configuration>
@@ -231,7 +231,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>http://bootswatch.com/2/united/bootstrap.min.css</url>
+              <url>http://bootswatch.com/united/bootstrap.min.css</url>
               <outputDirectory>${bootwatch-resources-directory}</outputDirectory>
               <outputFileName>united.min.css</outputFileName>
             </configuration>

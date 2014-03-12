@@ -44,8 +44,8 @@
       <outputDirectory>bluebird/css</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>${fontawesome-resources-directory}/font</directory>
-      <outputDirectory>bluebird/font</outputDirectory>
+      <directory>${fontawesome-resources-directory}/fonts</directory>
+      <outputDirectory>bluebird/fonts</outputDirectory>
     </fileSet>
     <!-- Add Bootwatch files -->
     <fileSet>

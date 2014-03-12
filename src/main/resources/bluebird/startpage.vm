@@ -6,18 +6,18 @@
 #if(($hidecolumns && ($!hidecolumns == 1)) || ($showLeftPanels == "0" && $showRightPanels == "0"))
 <div class="container">
 #else
-<div class="container-fluid">
-  <div class="row-fluid">
+<div class="container">
+  <div class="row">
   #if($showLeftPanels != "0")
     #if($showRightPanels != "0")
-    <div class="span9">
-      <div class="row-fluid">
-        <div class="span8 pull-right">
+    <div class="col-md-9">
+      <div class="row">
+        <div class="col-md-8 pull-right">
     #else
-        <div class="span9 pull-right">
+        <div class="col-md-9 pull-right">
     #end
   #else
     ## showRightPanels == 1
-        <div class="span9">
+        <div class="col-md-9">
   #end
 #end

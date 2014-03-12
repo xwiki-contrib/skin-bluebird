@@ -29,11 +29,11 @@
     #if ($services.wysiwyg.isSyntaxSupported($tdoc.syntax.toIdString()) || $tdoc.syntax.toIdString() == 'xwiki/1.0')
         #submenuitem($doc.getURL('edit', "$!{languageparams}#if ($languageparams != '')&amp;#{end}editor=wysiwyg") $services.localization.render('core.menu.edit.wysiwyg') 'tmEditWysiwyg' 'pencil')
     #end
-    #submenuitem($doc.getURL('edit', "$!{languageparams}#if ($languageparams != '')&amp;#{end}editor=wiki") $services.localization.render('core.menu.edit.wiki') 'tmEditWiki' 'chevron-right')
+    #submenuitem($doc.getURL('edit', "$!{languageparams}#if ($languageparams != '')&amp;#{end}editor=wiki") $services.localization.render('core.menu.edit.wiki') 'tmEditWiki' 'code')
     #submenuitem($doc.getURL($editaction, "$!{languageparams}#if ($languageparams != '')&amp;#{end}editor=inline") $services.localization.render('core.menu.edit.inline') 'tmEditInline' 'list-alt')
     #submenuseparator()
     #submenuitem($doc.getURL('edit', 'editor=rights') $services.localization.render('core.menu.edit.rights') 'tmEditRights' 'lock')
-    #submenuitem($doc.getURL('edit', 'editor=object') $services.localization.render('core.menu.edit.object') 'tmEditObject' 'cog')
+    #submenuitem($doc.getURL('edit', 'editor=object') $services.localization.render('core.menu.edit.object') 'tmEditObject' 'cogs')
     #submenuitem($doc.getURL('edit', 'editor=class') $services.localization.render('core.menu.edit.class') 'tmEditClass' 'cog')
     #xwikimenubuttonend()
   #else ## !isAdvanced
@@ -81,7 +81,7 @@
     #set ($hasPreviousMenuSection = true)
   #end
   #if ($hasEdit && $showattachments)
-    #submenuitem("$doc.getURL('view', 'viewer=attachments')" $services.localization.render('docextra.attachments') 'tmCreateAttachment', 'paper-clip')
+    #submenuitem("$doc.getURL('view', 'viewer=attachments')" $services.localization.render('docextra.attachments') 'tmCreateAttachment', 'paperclip')
     <script type="text/javascript">
       //<![CDATA[
         document.observe('xwiki:dom:loaded', function() {
@@ -109,7 +109,7 @@
     #set ($discard = $docextralinks.add(['content', $services.localization.render('core.links.content'), -1, 'file']))
   #end
   #if($viewer != 'comments' && $showcomments)
-    #set ($discard = $docextralinks.add(["comments", $services.localization.render("docextra.comments"), $doc.getObjects("XWiki.XWikiComments").size(), 'comments-alt']))
+    #set ($discard = $docextralinks.add(["comments", $services.localization.render("docextra.comments"), $doc.getObjects("XWiki.XWikiComments").size(), 'comments-o']))
   #end
   #if($showannotations)
     #if(!$annotationCount)
@@ -121,13 +121,13 @@
     #set ($discard = $docextralinks.add(["annotations", $services.localization.render("docextra.annotations"), $annotationCount, 'flag']))
   #end
   #if($viewer != 'attachments' && $showattachments)
-    #set ($discard = $docextralinks.add(["attachments", $services.localization.render("docextra.attachments"), $doc.getAttachmentList().size(), 'paper-clip']))
+    #set ($discard = $docextralinks.add(["attachments", $services.localization.render("docextra.attachments"), $doc.getAttachmentList().size(), 'paperclip']))
   #end
   #if($viewer != 'history' && $showhistory)
-    #set ($discard = $docextralinks.add(["history", $services.localization.render("docextra.history"), -1, 'time']))
+    #set ($discard = $docextralinks.add(["history", $services.localization.render("docextra.history"), -1, 'undo']))
   #end
   #if($viewer != 'information' && $showinformation)
-    #set ($discard = $docextralinks.add(["information", $services.localization.render("docextra.information"), -1, 'info-sign']))
+    #set ($discard = $docextralinks.add(["information", $services.localization.render("docextra.information"), -1, 'info']))
   #end
 #end
 ###
@@ -139,7 +139,7 @@
 ##
 ## Export menu
 ##
-  #submenuentrystart($services.localization.render('core.menu.export') 'tmExport' 'download-alt' 'pull-left')
+  #submenuentrystart($services.localization.render('core.menu.export') 'tmExport' 'download' 'pull-left')
   ## Preserve the document query string.
   #submenuitem($doc.getURL('view', "xpage=pdfoptions&amp;qs=$!escapetool.url($request.getQueryString())") $services.localization.render('core.menu.export.pdf') 'tmExportPdf')
   #if("$!{services.officemanager.serverState}" == "Connected")
@@ -151,7 +151,7 @@
     #submenuitem($doc.getURL('export', "format=xar&amp;name=$escapetool.url($doc.fullName)&amp;pages=$escapetool.url($doc.fullName)&amp;$!docvariant") $services.localization.render('core.menu.export.xar') 'tmExportXar')
   #end
   #xwikitopmenuentryend()
-  #submenuitem($doc.getURL('view', "viewer=code") $services.localization.render('core.menu.view.source') 'tmViewSource' 'quote-left')
+  #submenuitem($doc.getURL('view', "viewer=code") $services.localization.render('core.menu.view.source') 'tmViewSource' 'code')
   #if($docextralinks.size() > 0)
     #submenuseparator()
   #end

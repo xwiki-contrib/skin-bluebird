@@ -25,6 +25,7 @@
 ## Compute title to display and modify rendered content accordingly.
 ## ----------------------------------------------------------------------------
 #template("titlevars.vm")
+<div class="page-header">
 ## ----------------------------
 ## Display the title
 ## ----------------------------
@@ -42,6 +43,7 @@ $xcontext.dropPermissions()
 #if($displayShortcuts)
   #template("shortcuts.vm")
 #end
+</div>
 ## ----------------------------
 ## Display the rendered content
 ## ----------------------------

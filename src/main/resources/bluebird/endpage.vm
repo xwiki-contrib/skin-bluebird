@@ -1,26 +1,26 @@
 #if(($hidecolumns && ($!hidecolumns == 1)) || ($showLeftPanels == "0" && $showRightPanels == "0"))
 </div>## container
 #else
-        </div> ## span
+        </div> ## col-md
   #if($showRightPanels != "0")
     #if($showLeftPanels != "0")
-        <div id="leftPanels" class="span4 pull-left">
+        <div id="leftPanels" class="col-md-4">
       #template("leftpanels.vm")
         </div>
-      </div>## row-fluid
-    </div>## span
+      </div>## row
+    </div>## col-md
     #end
-    <div id="rightPanels" class="span3">
+    <div id="rightPanels" class="col-md-3">
 #template("rightpanels.vm")
     </div>
   #else
     ## showLeftPanel == 1
-    <div id="leftPanels" class="span3 pull-left">
+    <div id="leftPanels" class="col-md-3">
       #template("leftpanels.vm")
     </div>
   #end
-  </div> ## row-fluid
-</div>## container-fluid
+  </div> ## row
+</div>## container
 #end
 #template("footer.vm")
 #template("htmlfooter.vm")

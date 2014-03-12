@@ -1,6 +1,5 @@
 #template('xwikivars.vm')
 #set($dq='"')
-#set($divider='<span class="divider">&#187;</span>')
 #set($parents = [])
 #set($discard = $parents.add($doc.fullName))
 #macro(computeHierarchy $doc $result $level)
@@ -10,7 +9,7 @@
     #set($pdoc = $xwiki.getDocument($parent).getTranslatedDocument())
     #if ($pdoc)
       #set ($pdocurl = $pdoc.getURL('view'))
-      #set ($nstring = "<li><a href=${dq}$pdocurl${dq}>$escapetool.xml(${pdoc.getPlainTitle()})</a>$divider<li>$result")
+      #set ($nstring = "<li><a href=${dq}$pdocurl${dq}>$escapetool.xml(${pdoc.getPlainTitle()})</a></li>$result")
       #set ($level = $level + 1)
       #computeHierarchy($pdoc $nstring $level)
     #else
@@ -21,7 +20,7 @@
     #if($parent != "Main.WebHome")
       $result
     #else
-      <li><a href="$xwiki.getURL($parent)"><span class="icon-home"></span></a>$divider</li>$result
+      <li><a href="$xwiki.getURL($parent)"><span class="fa fa-home"></span></a></li>$result
     #end
   #end
 #end
@@ -34,7 +33,7 @@
       #computeHierarchy($doc "<li class=${dq}active${dq}>$escapetool.xml($tdoc.getPlainTitle())</li>" 0)
     #end
   #else
-    <li class="active"><span class="icon-home"></span></li>
+    <li class="active"><span class="fa fa-home"></span></li>
   #end
   </ul>
 #end

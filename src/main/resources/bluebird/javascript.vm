@@ -89,10 +89,26 @@ require.config({
     'jQueryNoConflict': { 'jquery': 'jquery' }
   }
 });
-define('jQueryNoConflict', ['jquery'], function($) { $.noConflict(); return $; });
-require(['jquery', 'bootstrap'], function($) {
-    window.jQuery = $;
-    return {};
+define('jQueryNoConflict', ['jquery'], function ($) {
+    return $.noConflict();
+});
+require(['jquery', 'bootstrap'], function ($) {
+    // Fix incompatibilities between BootStrap and Prototype
+    var disablePrototypeJS = function (eventFunction, pluginsToDisable) {
+                var handler = function (event) {
+                    var fct = event.target[eventFunction];
+                    event.target[eventFunction] = undefined;
+                    setTimeout(function () {
+                        event.target[eventFunction] = fct;
+                    }, 0);
+                };
+                pluginsToDisable.each(function (plugin) {
+                    $(window).on(eventFunction + '.bs.' + plugin, handler);
+                });
+            },
+            pluginsToDisable = ['collapse', 'dropdown', 'modal', 'tooltip'];
+    disablePrototypeJS('show', pluginsToDisable);
+    disablePrototypeJS('hide', pluginsToDisable);
 });
 XWiki.webapppath = "${xwiki.webAppPath}";
 XWiki.servletpath = "${xwiki.servletPath}";

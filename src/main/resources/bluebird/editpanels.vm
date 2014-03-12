@@ -16,7 +16,7 @@
   #set ($editorPanels = $editorPanelsHistory)
 #end
 #set ($editorPanels = $editorPanels.split(','))
-<div id="editPanels" class="panels editor span3">
+<div id="editPanels" class="panels editor col-md-3">
 #foreach ($panel in $editorPanels)
   #displaypanel($panel)
 #end

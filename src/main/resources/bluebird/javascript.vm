@@ -94,16 +94,15 @@ define('jQueryNoConflict', ['jquery'], function ($) {
 });
 require(['jquery', 'bootstrap'], function ($) {
     // Fix incompatibilities between BootStrap and Prototype
-    var disablePrototypeJS = function (eventFunction, pluginsToDisable) {
+    var disablePrototypeJS = function (method, pluginsToDisable) {
                 var handler = function (event) {
-                    var fct = event.target[eventFunction];
-                    event.target[eventFunction] = undefined;
+                    event.target[method] = undefined;
                     setTimeout(function () {
-                        event.target[eventFunction] = fct;
+                        delete event.target[method];
                     }, 0);
                 };
                 pluginsToDisable.each(function (plugin) {
-                    $(window).on(eventFunction + '.bs.' + plugin, handler);
+                    $(window).on(method + '.bs.' + plugin, handler);
                 });
             },
             pluginsToDisable = ['collapse', 'dropdown', 'modal', 'tooltip'];

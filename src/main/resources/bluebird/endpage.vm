@@ -4,18 +4,18 @@
         </div> ## col-md
   #if($showRightPanels != "0")
     #if($showLeftPanels != "0")
-        <div id="leftPanels" class="col-md-4">
+        <div id="leftPanelContainer" class="col-md-4 pull-left">
       #template("leftpanels.vm")
         </div>
       </div>## row
     </div>## col-md
     #end
-    <div id="rightPanels" class="col-md-3">
+    <div class="col-md-3">
 #template("rightpanels.vm")
     </div>
   #else
     ## showLeftPanel == 1
-    <div id="leftPanels" class="col-md-3">
+    <div id="leftPanelContainer" class="col-md-3 pull-left">
       #template("leftpanels.vm")
     </div>
   #end

@@ -1,3 +1,27 @@
+/* Bring back the vertical divider */
+.navbar .divider-vertical {
+    height: 50px;
+    margin: 0 9px;
+    border-right: 1px solid #ffffff;
+    border-left: 1px solid #f2f2f2;
+}
+
+.navbar-inverse .divider-vertical {
+    border-right-color: #333;
+    border-left-color: #222;
+}
+
+@media (max-width: 767px) {
+    .navbar-collapse .nav > .divider-vertical {
+        display: none;
+    }
+}
+
+/* Auto open navbar dropdown */
+.navbar-nav > li:hover > .dropdown-menu {
+    display: block;
+}
+
 /* Allow inverting left and right column in row-fluid */
 @media (max-width: 992px) {
     #leftPanelContainer.pull-left, #MainContentContainer.pull-right {
@@ -597,11 +621,9 @@ color: $theme.menuLinkColor;
     margin: -1px 220px 0;
     overflow: hidden;
 }
-
-.navbar .nav > li:hover > .dropdown-menu {
-    display: block;
+.full {
+    width: 99.8%;
 }
-
-.navbar .dropdown-menu {
-    margin-top: -2px;
+.column {
+    float: left;
 }
